@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -24,22 +25,16 @@ public class FriendshipServiceImpl implements FriendshipService{
 
     @Override
     public Friendship createFriendship(String userEmail, String friendEmail) {
-        System.out.println(userEmail);
-        System.out.println(friendEmail);
 
         Optional<User> userOptional = userRepository.findById(userEmail);
         if (!userOptional.isPresent()) {
-            System.out.println("olaola");
             return null;
         }
 
         Optional<User> friendOptional = userRepository.findById(friendEmail);
         if (!friendOptional.isPresent()) {
-            System.out.println("olaola222");
             return null;
         }
-
-        System.out.println("AAAAAAAAAAAAAAAAA");
 
         if (friendshipRepository.findByUserAndFriend(userEmail, friendEmail).isPresent()) {
             return null;
@@ -65,5 +60,17 @@ public class FriendshipServiceImpl implements FriendshipService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean areFriends(String user1, String user2){
+        Optional<Friendship> friendship1 = friendshipRepository.findByUserAndFriend(user1, user2);
+        if (friendship1.isPresent() && friendship1.get().getConfirmed()) {
+            return true;
+        }
+
+        Optional<Friendship> friendship2 = friendshipRepository.findByUserAndFriend(user2, user1);
+        return friendship2.isPresent() && friendship2.get().getConfirmed();
+
     }
 }

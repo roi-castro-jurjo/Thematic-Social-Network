@@ -1,6 +1,7 @@
 package gal.usc.etse.grei.es.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -8,8 +9,11 @@ import java.util.StringJoiner;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Date {
+    @Schema(minimum = "1", maximum = "31", example = "12")
     private Integer day;
+    @Schema(minimum = "1", maximum = "12", example = "4")
     private Integer month;
+    @Schema(minimum = "1900", example = "1984")
     private Integer year;
 
     public Date() {
@@ -74,14 +78,5 @@ public class Date {
                 .add("year=" + year)
                 .toString();
     }
-
-    public static Date toDate(String s){
-        int day = Integer.parseInt(s.split(",")[0].replaceAll("\\D", ""));
-        int month = Integer.parseInt(s.split(",")[1].replaceAll("\\D", ""));
-        int year = Integer.parseInt(s.split(",")[2].replaceAll("\\D", ""));
-
-        return new Date(day, month, year);
-
-
-    }
 }
+

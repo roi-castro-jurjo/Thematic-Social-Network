@@ -14,4 +14,6 @@ public interface FriendshipService {
     Friendship createFriendship(String userEmail, String friendEmail);
 
     boolean removeFriendship(String userEmail, String friendEmail);
+
+    boolean areFriends(String user1, String user2);
 }

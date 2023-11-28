@@ -54,3 +54,41 @@
   - [ ] Make it use the friendship class
   - [ ] Make it not bidirectional until confirmed
   - [ ] Make it bidirectional when confirmed
+
+
+## AUTHORITATION
+- [ ] Get a single user
+- [ ] Get all users
+- [ ] Create a new user
+- [ ] Delete a user
+- [ ] Modifie a user
+- [ ] Add a friend
+- [ ] Delete a friend
+- [ ] Get a film
+- [ ] Get all films
+- [ ] Create a new film
+- [ ] Modifie a film
+- [ ] Delete a film
+- [ ] Get all comments from a film
+- [ ] Get all comments from a user
+- [ ] Add comment to a film
+- [ ] Edit a comment
+- [ ] Delete a comment
+
+## HATEOAS
+- [ ] Get a user
+- [ ] Get all users
+- [ ] Create a new user
+- [ ] Delete a user
+- [ ] Edit a user
+- [ ] Get a film
+- [ ] Get all films
+- [ ] Create a film
+- [ ] Delete a film
+- [ ] Get all comments from a film
+- [ ] Get all comments from a user
+- [ ] Add comment to a film
+- [ ] Edit a comment
+- [ ] Delete a comment
+
+## SWAGGER

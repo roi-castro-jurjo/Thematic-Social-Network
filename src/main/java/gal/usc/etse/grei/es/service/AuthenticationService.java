@@ -25,6 +25,8 @@ public class AuthenticationService implements UserDetailsService {
         // e lanzamos a excepción no caso de que non exista
         User user = users.findById(username).orElseThrow(() -> new UsernameNotFoundException(username));
 
+        System.out.println("Hello " + user);
+
         // Creamos o usuario de spring empregando o builder
         return org.springframework.security.core.userdetails.User.builder()
                 // Establecemos o nome do usuario
@@ -33,7 +35,9 @@ public class AuthenticationService implements UserDetailsService {
                 .password(user.getPassword())
                 // Establecemos a lista de roles que ten o usuario.
                 // Por convenio, os roles sempre teñen o prefixo "ROLE_"
-                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", user.getRoles())))
+                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList(
+                        String.join(",", user.getRoles())
+                ))
                 // Xeneramos o obxecto do usuario a partir dos datos introducidos no builder
                 .build();
     }

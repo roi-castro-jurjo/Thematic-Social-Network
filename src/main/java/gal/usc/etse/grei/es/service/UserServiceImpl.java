@@ -121,6 +121,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User addFriend(String userEmail, User friend) {
+        return null;
+    }
+
+    @Override
+    public boolean removeFriend(String userEmail, String friendEmail) {
+        return false;
+    }
+
+    /*@Override
+    public User addFriend(String userEmail, User friend) {
         Optional<User> userOptional = userRepository.findById(userEmail);
         if (!userOptional.isPresent()) {
             return null;
@@ -185,7 +195,7 @@ public class UserServiceImpl implements UserService{
         }
 
         return isRemoved;
-    }
+    }*/
 
 
 

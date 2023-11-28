@@ -5,52 +5,63 @@ import gal.usc.etse.grei.es.controller.dto.FilterCondition;
 import gal.usc.etse.grei.es.domain.Assessment;
 import gal.usc.etse.grei.es.domain.Cast;
 import gal.usc.etse.grei.es.domain.User;
+import gal.usc.etse.grei.es.exception.NotFoundException;
+import gal.usc.etse.grei.es.exception.ServerErrorException;
 import gal.usc.etse.grei.es.repository.support.GenericFilterCriteriaBuilder;
 import gal.usc.etse.grei.es.service.AssessmentService;
 import gal.usc.etse.grei.es.service.UserService;
 import gal.usc.etse.grei.es.service.FilterBuilderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User API", description = "User related operations")
+@SecurityRequirement(name = "JWT")
 public class UserController {
 
     private final UserService userService;
     private final FilterBuilderService filterBuilderService;
-    private final AssessmentService assessmentService;
 
     public UserController(UserService userService, FilterBuilderService filterBuilderService, AssessmentService assessmentService) {
         this.userService = userService;
         this.filterBuilderService = filterBuilderService;
-        this.assessmentService = assessmentService;
     }
 
     private void cleanUserFields(User user) {
         user.setEmail(null);
-        user.setFriends(null);
+        //user.setFriends(null);
     }
 
 
     /**
      * @param page      page number
      * @param size      size count
-     * @param filterOr  string filter or conditions
-     * @param filterAnd string filter and conditions
      * @param order    string orders
      * @return PageResponse<User>
      */
@@ -58,20 +69,28 @@ public class UserController {
     public ResponseEntity<PageResponse<User>> getSearchCriteriaPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size,
-            @RequestParam(value = "filterOr", required = false) String filterOr,
-            @RequestParam(value = "filterAnd", required = false) String filterAnd,
-            @RequestParam(value = "order", required = false) String order) {
+            @RequestParam(value = "order", required = false) String order,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "email", required = false) String email) {
 
         PageResponse<User> response = new PageResponse<>();
 
         Pageable pageable = filterBuilderService.getPageable(size, page, order);
         GenericFilterCriteriaBuilder filterCriteriaBuilder = new GenericFilterCriteriaBuilder();
 
+        String filter = "";
 
-        List<FilterCondition> andConditions = filterBuilderService.createFilterCondition(filterAnd);
-        List<FilterCondition> orConditions = filterBuilderService.createFilterCondition(filterOr);
+        if (name != null){
+            filter += "name|like|" + name + "&";
+        }
 
-        Query query = filterCriteriaBuilder.addCondition(andConditions, orConditions);
+        if (email != null){
+            filter += "email|like|" + email + "&";
+        }
+
+        List<FilterCondition> andConditions = filterBuilderService.createFilterCondition(filter);
+
+        Query query = filterCriteriaBuilder.addCondition(andConditions, null);
         Page<User> pg = userService.getPage(query, pageable);
         for (User user : pg) {
             cleanUserFields(user);
@@ -84,8 +103,58 @@ public class UserController {
 
 
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal or @friendshipServiceImpl.areFriends(#id, principal)")
+    @Operation(
+            operationId = "getOneUser",
+            summary = "Get a single user details",
+            description = "Get the details for a given user. To see the user details " +
+                    "you must be the requested user, his friend, or have admin permissions."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "The user details",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = User.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Not enough privileges",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Bad token",
+                    content = @Content
+            ),
+    })
     ResponseEntity<User> get(@PathVariable("id") String id) {
-        return ResponseEntity.of(userService.get(id));
+        Optional<User> user;
+        try {
+            user = userService.get(id);
+            if (user.isPresent()){
+                Link self = linkTo(methodOn(UserController.class).get(id)).withSelfRel();
+                Link all = linkTo(methodOn(UserController.class).getSearchCriteriaPage(0, 20, null, null, null)).withRel(IanaLinkRelations.NEXT);
+                return ResponseEntity.ok()
+                        .headers(new HttpHeaders(){{
+                            add(HttpHeaders.LINK, self.toString());
+                            add(HttpHeaders.LINK, all.toString());
+                        }})
+                        .body(user.get());
+            }
+            else {
+                throw new NotFoundException("User not found.");
+            }
+        } catch (Exception e){
+            return ResponseEntity.of(userService.get(id));
+        }
     }
 
     @GetMapping(path = "user/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -138,6 +207,7 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<Object> addUser(@RequestBody User user){
+        System.out.println(user.getBirthday());
         User response = userService.postUser(user);
         if (response == null) {
             Map<String, Object> body = new LinkedHashMap<>();
