@@ -357,13 +357,52 @@ public class MovieController {
 
 
 
-    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Modified movie details.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Movie.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Movie not found",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Not enough privileges",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Bad token",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad body",
+                    content = @Content
+            ),
+    })
     public ResponseEntity<Object> modifyMovie(@PathVariable String id, @RequestBody Movie movie){
         Movie updatedMovie = movieService.putMovie(id, movie);
         if (updatedMovie == null) {
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.ok(updatedMovie);
+            Link self = linkTo(methodOn(MovieController.class).modifyMovie(id, movie)).withSelfRel();
+            Link all = linkTo(methodOn(MovieController.class).getAllMovies(0, 10, null, null, null, null, null)).withRel(IanaLinkRelations.NEXT);
+
+            return ResponseEntity.ok()
+                    .headers(new HttpHeaders(){{
+                        add(HttpHeaders.LINK, self.toString());
+                        add(HttpHeaders.LINK, all.toString());
+                    }})
+                    .body(updatedMovie);
         }
     }
 

@@ -67,7 +67,7 @@
 - [x] Get a film
 - [x] Get all films
 - [x] Create a new film
-- [ ] Modifie a film
+- [x] Modifie a film
 - [x] Delete a film
 - [ ] Get all comments from a film
 - [ ] Get all comments from a user
@@ -85,7 +85,7 @@
 - [x] Get all films
 - [x] Create a film
 - [x] Delete a film
-- [ ] Modifie a film
+- [x] Modifie a film
 - [ ] Get all comments from a film
 - [ ] Get all comments from a user
 - [ ] Add comment to a film
@@ -102,7 +102,7 @@
 - [x] Get all films
 - [x] Create a film
 - [x] Delete a film
-- [ ] Modifie a film
+- [x] Modifie a film
 - [ ] Get all comments from a film
 - [ ] Get all comments from a user
 - [ ] Add comment to a film

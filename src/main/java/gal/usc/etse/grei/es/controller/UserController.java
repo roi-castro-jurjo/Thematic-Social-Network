@@ -408,7 +408,7 @@ public class UserController {
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         } else {
 
-            Link self = linkTo(methodOn(UserController.class).addUser(user)).withSelfRel();
+            Link self = linkTo(methodOn(UserController.class).modifyUser(id, user)).withSelfRel();
             Link all = linkTo(methodOn(UserController.class).getAllUsers(0, 10, null, null, null)).withRel(IanaLinkRelations.NEXT);
 
             return ResponseEntity.ok()
