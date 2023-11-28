@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserService{
             return null;
         }
 
+        if (user.getRoles() == null) {
+            ArrayList<String> defautRole = new ArrayList<>();
+            defautRole.add("ROLE_USER");
+            user.setRoles(defautRole);
+        }
+
         if (userRepository.findById(user.getEmail()).isPresent()) {
             System.out.println("A user with this email already exists.");
             return null;

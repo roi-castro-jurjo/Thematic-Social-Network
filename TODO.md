@@ -46,7 +46,7 @@
 ## FIXES 
 - [x] Fix how you search for comments based on movie and user
 - [x] Clean URLs to search for movies
-- [ ] Clean URLs to search for users
+- [x] Clean URLs to search for users
 - [ ] Make that deleting a movie deletes all related comments
 - [ ] Make that deleting an user sets all comments of that user to "User deleted"
 - [ ] Make the ready console log more professional
@@ -57,18 +57,18 @@
 
 
 ## AUTHORITATION
-- [ ] Get a single user
-- [ ] Get all users
-- [ ] Create a new user
-- [ ] Delete a user
-- [ ] Modifie a user
+- [x] Get a single user
+- [x] Get all users
+- [x] Create a new user
+- [x] Delete a user
+- [x] Modifie a user
 - [ ] Add a friend
 - [ ] Delete a friend
-- [ ] Get a film
-- [ ] Get all films
-- [ ] Create a new film
+- [x] Get a film
+- [x] Get all films
+- [x] Create a new film
 - [ ] Modifie a film
-- [ ] Delete a film
+- [x] Delete a film
 - [ ] Get all comments from a film
 - [ ] Get all comments from a user
 - [ ] Add comment to a film
@@ -76,15 +76,16 @@
 - [ ] Delete a comment
 
 ## HATEOAS
-- [ ] Get a user
-- [ ] Get all users
-- [ ] Create a new user
-- [ ] Delete a user
-- [ ] Edit a user
-- [ ] Get a film
-- [ ] Get all films
-- [ ] Create a film
-- [ ] Delete a film
+- [x] Get a user
+- [x] Get all users
+- [x] Create a new user
+- [x] Delete a user
+- [x] Edit a user
+- [x] Get a film
+- [x] Get all films
+- [x] Create a film
+- [x] Delete a film
+- [ ] Modifie a film
 - [ ] Get all comments from a film
 - [ ] Get all comments from a user
 - [ ] Add comment to a film
@@ -92,3 +93,20 @@
 - [ ] Delete a comment
 
 ## SWAGGER
+- [x] Get a user
+- [x] Get all users
+- [x] Create a new user
+- [x] Delete a user
+- [x] Edit a user
+- [x] Get a film
+- [x] Get all films
+- [x] Create a film
+- [x] Delete a film
+- [ ] Modifie a film
+- [ ] Get all comments from a film
+- [ ] Get all comments from a user
+- [ ] Add comment to a film
+- [ ] Edit a comment
+- [ ] Delete a comment
+
+
