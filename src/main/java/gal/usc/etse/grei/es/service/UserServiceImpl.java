@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User postUser(User user) {
+        System.out.println(user);
         if (user.getName() == null || Objects.equals(user.getName(), "")) {
             System.out.println("Name is mandatory to POST.");
             return null;

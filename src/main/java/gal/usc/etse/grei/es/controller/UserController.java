@@ -34,7 +34,6 @@ import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/users")
@@ -262,6 +261,7 @@ public class UserController {
             ),
     })
     public ResponseEntity<Object> addUser(@RequestBody User user){
+        System.out.println(user);
         User response = userService.postUser(user);
         if (response == null) {
             Map<String, Object> body = new LinkedHashMap<>();
@@ -369,6 +369,11 @@ public class UserController {
      */
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("#id == principal")
+    @Operation(
+            operationId = "modifyUser",
+            summary = "Edit a user",
+            description = "Edit a user. Only the user can edit a user."
+    )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",

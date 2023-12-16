@@ -359,6 +359,11 @@ public class MovieController {
 
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(
+            operationId = "modifyMovie",
+            summary = "Edit a movie",
+            description = "Edit a movie. Only an admin can edit a movie."
+    )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",

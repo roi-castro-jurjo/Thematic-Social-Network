@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "TMDB clone REST API",
+                title = "IMDB clone REST API",
                 description = "API do proxecto de Enxeñaría de Servizos",
                 version = "1.0.0",
                 contact = @Contact(

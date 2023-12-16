@@ -58,6 +58,7 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public Movie postMovie(Movie movie){
+        System.out.println(movie);
         if (movie.getTitle() == null || Objects.equals(movie.getTitle(), "")){
             System.out.println("Title is mandatory to POST.");
             return null;

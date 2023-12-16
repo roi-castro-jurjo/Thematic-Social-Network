@@ -69,8 +69,8 @@
 - [x] Create a new film
 - [x] Modifie a film
 - [x] Delete a film
-- [ ] Get all comments from a film
-- [ ] Get all comments from a user
+- [x] Get all comments from a film
+- [x] Get all comments from a user
 - [ ] Add comment to a film
 - [ ] Edit a comment
 - [ ] Delete a comment
@@ -86,8 +86,8 @@
 - [x] Create a film
 - [x] Delete a film
 - [x] Modifie a film
-- [ ] Get all comments from a film
-- [ ] Get all comments from a user
+- [x] Get all comments from a film
+- [x] Get all comments from a user
 - [ ] Add comment to a film
 - [ ] Edit a comment
 - [ ] Delete a comment
@@ -103,10 +103,13 @@
 - [x] Create a film
 - [x] Delete a film
 - [x] Modifie a film
-- [ ] Get all comments from a film
-- [ ] Get all comments from a user
+- [x] Get all comments from a film
+- [x] Get all comments from a user
 - [ ] Add comment to a film
 - [ ] Edit a comment
 - [ ] Delete a comment
 
 
+- [ ] Fix Links when adding
+- [ ] Fix swagger documentation to movies and assessments
+- [ ] Fix friendship confirm and swagger docs
