@@ -16,15 +16,17 @@ export function MovieList({
                           }) {
     const [page, setPage] = useState(0)
     const {
-        content = [],
+        items = [],
         pagination: { hasNext = false, hasPrevious = false } = { hasNext: false, hasPrevious: false}
     } = useMovies({...query, pagination: { ...query.pagination, page}})
 
     const nextPage = evt => { evt?.target?.blur(); setPage(page => page + 1) }
     const prevPage = evt => { evt?.target?.blur(); setPage(page => page - 1) }
 
-    if(content?.length === 0)
+
+    if(items?.length === 0){
         return null
+    }
     else
         return <section className = { `p-4 w-full mx-auto ${className}` }>
             {
@@ -41,7 +43,7 @@ export function MovieList({
                     <Left className = 'w-6 h-6 pointer-events-none'/>
                 </Button>
                 <ul className = 'w-full flex-1 grid grid-cols-7 gap-2 relative items-center justify-center'>
-                    { content?.map(movie =>  <Poster movie = { movie } key = { movie.id } className = { itemClassName } />) }
+                    { items?.map(movie =>  <Poster movie = { movie } key = { movie.id } className = { itemClassName } />) }
                 </ul>
                 <Button className = 'rounded-full'
                         variant = { paginationVariant }

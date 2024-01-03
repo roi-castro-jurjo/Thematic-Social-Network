@@ -5,13 +5,13 @@ import { EyeOutline as ViewMore } from '@graywolfai/react-heroicons'
 import { useMovies } from '../../hooks'
 
 export function Carousel({query = {}}) {
-    const { content = [] } = useMovies(query)
+    const { items = [] } = useMovies(query)
 
     const [{activeIndex}, dispatch] = useReducer(
         (state, action) => {
             switch(action.type) {
-                case 'next': return { activeIndex: ((state.activeIndex + 1) % content.length) }
-                case 'prev': return { activeIndex: ((state.activeIndex - 1) % content.length) }
+                case 'next': return { activeIndex: ((state.activeIndex + 1) % items.length) }
+                case 'prev': return { activeIndex: ((state.activeIndex - 1) % items.length) }
                 case 'pause': return { activeIndex: state.activeIndex }
                 case 'set': return  { activeIndex: action.payload }
                 default: throw new Error('Invalid action')
@@ -30,14 +30,14 @@ export function Carousel({query = {}}) {
         <ul className = 'w-full relative overflow-hidden'
             style = {{ height: '36rem' }}>
             {
-                content?.map((movie, idx) =>
-                    <Element key = { movie.id } movie = {movie} active = { activeIndex } index = { idx } total = { content.length }/>
+                items?.map((movie, idx) =>
+                    <Element key = { movie.id } movie = {movie} active = { activeIndex } index = { idx } total = { items.length }/>
                 )
             }
         </ul>
         <ul className = 'w-full absolute flex space-x-2 bottom-0 h-12 z-20 items-center justify-center'>
             {
-                content?.map((movie, idx) =>
+                items?.map((movie, idx) =>
                     <li key = { idx }
                         className = {`block rounded-full bg-white h-2 cursor-pointer transition-all duration-1000 shadow
                                       hover:bg-gradient-to-br hover:from-pink-500 hover:via-red-500 hover:to-yellow-500

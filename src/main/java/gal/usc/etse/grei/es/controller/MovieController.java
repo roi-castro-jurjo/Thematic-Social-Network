@@ -2,10 +2,7 @@ package gal.usc.etse.grei.es.controller;
 
 import gal.usc.etse.grei.es.controller.dto.FilterCondition;
 import gal.usc.etse.grei.es.controller.dto.MovieDTO;
-import gal.usc.etse.grei.es.domain.Assessment;
-import gal.usc.etse.grei.es.domain.Cast;
-import gal.usc.etse.grei.es.domain.Movie;
-import gal.usc.etse.grei.es.domain.User;
+import gal.usc.etse.grei.es.domain.*;
 import gal.usc.etse.grei.es.exception.NotFoundException;
 import gal.usc.etse.grei.es.repository.support.GenericFilterCriteriaBuilder;
 import gal.usc.etse.grei.es.service.AssessmentService;
@@ -18,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.catalina.util.ResourceSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,6 +65,12 @@ public class MovieController {
         movie.setStatus(null);
         movie.setRuntime(null);
         movie.setRevenue(null);
+        if (movie.getResources().isEmpty()){
+            ArrayList<Resource> placeholders = new ArrayList<>();
+            placeholders.add(new Resource(ResourceType.POSTER, "https://eapp.org/wp-content/uploads/2018/05/poster_placeholder.jpg"));
+            placeholders.add(new Resource(ResourceType.BACKDROP, "https://m.media-amazon.com/images/W/MEDIAX_792452-T2/images/I/41Sep4yOJ2S.jpg"));
+            movie.setResources(placeholders);
+        }
     }
 
 
@@ -124,7 +128,7 @@ public class MovieController {
         String filter = "";
         String creditsFilter = null;
 
-        if (genre != null){
+        if (genre != null && !genre.isEmpty()){
             genre =  genre.substring(0,1).toUpperCase() + genre.substring(1);
             filter += "genres|jn|" + genre + "&";
         }
@@ -135,8 +139,11 @@ public class MovieController {
 
         if (date != null){
             String[] dateDivided = date.split("-");
-            filter += "releaseDate.day|eq|" + dateDivided[0] + "&releaseDate.month|eq|" + dateDivided[1] + "&releaseDate.year|eq|" + dateDivided[2] + "&";
+            if (dateDivided.length == 3) {
+                filter += "releaseDate.day|eq|" + dateDivided[0] + "&releaseDate.month|eq|" + dateDivided[1] + "&releaseDate.year|eq|" + dateDivided[2] + "&";
+            }
         }
+
 
         List<FilterCondition> andConditions = filterBuilderService.createFilterCondition(filter);
         List<FilterCondition> orConditions = filterBuilderService.createFilterCondition(null);

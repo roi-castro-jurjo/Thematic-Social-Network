@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import API from '../api'
 
 export function useMovies(query = {}) {
-    const [data, setData] = useState({ content: [], pagination: { hasNext: false, hasPrevious: false }})
+    const [data, setData] = useState({ items: [], pagination: { hasNext: false, hasPrevious: false }})
     const queryString = JSON.stringify(query)
 
     useEffect(() => {
@@ -11,7 +11,6 @@ export function useMovies(query = {}) {
             .findMovies(JSON.parse(queryString))
             .then(setData)
     }, [queryString])
-
     return data
 }
 
@@ -55,7 +54,7 @@ export function useUser(id = null) {
 }
 
 export function useComments(query = {}){
-    const [data, setData] = useState({ content: [], pagination: { hasNext: false, hasPrevious: false }})
+    const [data, setData] = useState({ items: [], pagination: { hasNext: false, hasPrevious: false }})
     const queryString = JSON.stringify(query)
 
     useEffect(() => {
