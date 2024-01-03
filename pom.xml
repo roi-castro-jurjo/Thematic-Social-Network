@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tutorial</groupId>
-    <artifactId>spring-data-mongodb-dynamic-queries</artifactId>
+    <artifactId>not-imdb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-data-mongodb-dynamic-queries</name>
     <description>Demo project for Spring Boot</description>

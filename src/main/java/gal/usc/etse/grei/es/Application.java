@@ -22,6 +22,6 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("| READY |");
+        System.out.println("| READY 2 GO |");
     }
 }
