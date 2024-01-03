@@ -17,7 +17,7 @@ export default function Login() {
     }
 
     if(isAuthenticated)
-        return <Redirect to = '/' />
+        return <Redirect to = '/movies' />
     else
         return <main className = 'w-screen h-screen flex flex-col items-center justify-center bg-pattern-1' >
             <form className = 'bg-white rounded p-8 flex flex-col shadow-md text-teal-900'
